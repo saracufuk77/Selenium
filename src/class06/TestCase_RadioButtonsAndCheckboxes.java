@@ -23,23 +23,23 @@ public class TestCase_RadioButtonsAndCheckboxes {
 
         List<WebElement> colors = driver.findElements(By.cssSelector("input[name='color']"));
 
-//        for (WebElement color : colors) {
-//            String colorName = color.getAttribute("value");
-//            if(colorName.equalsIgnoreCase("yellow") || colorName.equalsIgnoreCase("orange")){
-//                color.click();
-//                    System.out.println(colorName);
-//            }
-//        }
-
-        System.out.println("=====================");
         for (WebElement color : colors) {
             String colorName = color.getAttribute("value");
-            while (colorName.equalsIgnoreCase("yellow") || colorName.equalsIgnoreCase("orange")){
+            if(colorName.equalsIgnoreCase("yellow") || colorName.equalsIgnoreCase("orange")){
                 color.click();
-                System.out.println(colorName);
-                break;
+                    System.out.println(colorName);
             }
         }
+
+        System.out.println("=====================");
+//        for (WebElement color : colors) {
+//            String colorName = color.getAttribute("value");
+//            while (colorName.equalsIgnoreCase("yellow") || colorName.equalsIgnoreCase("orange")){
+//                color.click();
+//                System.out.println(colorName);
+//                break;
+//            }
+//        }
 
         Thread.sleep(2000);
         driver.close();

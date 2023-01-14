@@ -9,7 +9,7 @@ import static utils.BaseClass.*;
 
 public class _03_DropDown_Multiple {
     public static void main(String[] args) throws InterruptedException {
-        setUp(); // use this URL https://selenium08.blogspot.com/2019/11/dropdown.html
+        setUp("https://selenium08.blogspot.com/2019/11/dropdown.html"); // use this URL https://selenium08.blogspot.com/2019/11/dropdown.html
 
         WebElement months = driver.findElement(By.cssSelector("select[name='Month']"));
         Select select = new Select(months);

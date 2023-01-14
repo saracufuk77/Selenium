@@ -7,7 +7,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 //THIS CLASS IS USED TO LAUNCH AND QUIT THE BROWSER
 public class BaseClass {
     public static WebDriver driver;
-    public static void setUp(){
+    public static void setUp(String url){
         //1.way : hard coding (not recommended)
         //System.setProperty("Webdriver.chrome.driver",Constants.CHROME_DRIVER_PATH);
         //WebDriver driver = new ChromeDriver();
@@ -29,7 +29,9 @@ public class BaseClass {
             default -> throw new RuntimeException("Browser is not supported");
         }
 
-        driver.get(ConfigsReader.getProperties("url"));
+       // driver.get(ConfigsReader.getProperties("url"));
+        driver.get(url);
+        driver.manage().window().maximize();
 
     }
 

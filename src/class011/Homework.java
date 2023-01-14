@@ -24,7 +24,7 @@ import static utils.BaseClass.*;
  */
 public class Homework {
     public static void main(String[] args) {
-        setUp();
+        setUp("https://selenium08.blogspot.com/2019/11/dropdown.html");
 
         WebElement checkboxMenu = driver.findElement(By.xpath("//ul/li[6]/a"));
         checkboxMenu.click();

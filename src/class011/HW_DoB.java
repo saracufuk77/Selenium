@@ -8,7 +8,7 @@ import static utils.BaseClass.*;
 
 public class HW_DoB {
     public static void main(String[] args) throws InterruptedException {
-        setUp();
+        setUp("https://vitalets.github.io/combodate/");
         WebElement days = driver.findElement(By.xpath("(//select[@class='day '])[1]"));
         Select select = new Select(days);
 //        final var listofdays = select.getOptions();
