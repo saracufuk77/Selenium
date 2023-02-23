@@ -12,6 +12,7 @@ public class ConfigsReader_old {
 
     public static void main(String[] args) throws IOException {
         String filePath = System.getProperty("user.dir") + "/configs/configuration.properties";
+        System.out.println(filePath);
         FileInputStream fis =new FileInputStream(filePath);
         Properties properties = new Properties();
         properties.load(fis);

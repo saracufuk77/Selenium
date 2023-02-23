@@ -1,11 +1,13 @@
 package utils;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Set;
@@ -53,13 +55,25 @@ public class CommonMethods {
         waitForElement().until(ExpectedConditions.visibilityOf(element));
     }
 
-    public static void waitForVisibilty(By by){
+    public static void waitForVisibiltyOfElement(By by){
         waitForElement().until(ExpectedConditions.visibilityOfElementLocated(by));
+    }
+
+    public static void waitForPresenceOfElements(By by){
+        waitForElement().until(ExpectedConditions.presenceOfElementLocated(by));
     }
 
     public static void clickButWaitForVisibility(WebElement element){
         waitForVisibilty(element);
         element.click();
+    }
+
+    public static void wait(int second) {
+        try {
+            Thread.sleep(second * 1000L);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void clickRadioOrCheckBox(List<WebElement> radioOrCheckBox, String expectedValue){
@@ -124,7 +138,92 @@ public class CommonMethods {
         Select select = new Select(element);
 //        List<WebElement> options = select.getOptions();
         select.selectByIndex(index);
-        // burada try catch ile outofbounderror u hallet. 
+        // burada try catch ile outofbounderror u hallet.
     }
+
+    public static void acceptAlert() {
+        try {
+            driver.switchTo().alert().accept();
+        } catch (NoAlertPresentException e) {
+            e.printStackTrace();
+            System.out.println("Alert is not present.");
+        }
+    }
+
+    public static void dismissAlert() {
+        driver.switchTo().alert().dismiss();
+    }
+
+    public static void sendAlertText(String text) {
+        driver.switchTo().alert().sendKeys(text);
+    }
+
+    public static String getAlertText() {
+        String alertText = null;
+        try {
+            alertText = driver.switchTo().alert().getText();
+        } catch (NoAlertPresentException e) {
+            e.printStackTrace();
+        }
+        return alertText;
+    }
+
+    public static void scrollToParagraph(int index){
+        String script ="window.scrollTo(0, document.body.scrollHeight)";
+        var jsExecuter = (JavascriptExecutor) driver;
+
+        while (getNumberOfParagraph()<index){
+            jsExecuter.executeScript(script); //scroll down by one <p> i.e paragraph
+        }
+        System.out.println("No of paragraphs: "+ getNumberOfParagraph());
+    }
+
+    public static int getNumberOfParagraph(){
+        List<WebElement> paragraphs = driver.findElements(By.className("jscroll-added"));
+        return paragraphs.size();
+    }
+
+    public static JavascriptExecutor jsExecutor() {
+        return (JavascriptExecutor) driver;
+    }
+
+    /**
+     * Method performs simple click based on Javascript. Use this if regular Selenium click fails.
+     *
+     * @param element WebElement that needs to be clicked on.
+     */
+    public static void jsClick(WebElement element) {
+        jsExecutor().executeScript("arguments[0].click();", element);
+    }
+
+    /**
+     * Method will scroll to the given element
+     *
+     * @param element WebElement to get scrolled to
+     */
+    public static void scrollToElement(WebElement element) {
+        jsExecutor().executeScript("arguments[0].scrollIntoView(true);", element);
+    }
+
+    /**
+     * Method will scroll both vertically (left & right) and horizontally (up & down) based on given pixels.
+     * @param horizontalPixel int
+     * @param verticalPixel int
+     */
+    public static void scrollToElement(int horizontalPixel, int verticalPixel) {
+        jsExecutor().executeScript("window.scrollBy(" + horizontalPixel + "," + verticalPixel + ")");
+    }
+
+    public static void takeScreenshot(String fileName) {
+        TakesScreenshot takesScreenshot = (TakesScreenshot) driver;
+        File sourceFile = takesScreenshot.getScreenshotAs(OutputType.FILE);
+        try {
+            FileUtils.copyFile(sourceFile, new File("screenshots/" + fileName + ".png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Screenshot is not taken");
+        }
+    }
+
 
 }
